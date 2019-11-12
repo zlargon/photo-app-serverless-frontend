@@ -42,6 +42,7 @@ function App(props) {
     userHasAuthenticated(false);
     //redirect to login after logout
     props.history.push("/login");
+       
   }
   
   return (
@@ -50,7 +51,7 @@ function App(props) {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">ITC6480 - Final Project - We Hate Servers</Link>
+              <Link to="/">ITC-6480 - We Hate Servers</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

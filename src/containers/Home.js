@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import "./Home.css";
-import { LinkContainer } from "react-router-bootstrap";
 import { API } from "aws-amplify";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default function Home(props) {
   const [notes, setNotes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(() => {
     async function onLoad() {
       if (!props.isAuthenticated) {
@@ -43,7 +43,7 @@ export default function Home(props) {
         <LinkContainer key="new" to="/notes/new">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Create a new note
+              <b>{"\uFF0B"}</b> Create a new upload
             </h4>
           </ListGroupItem>
         </LinkContainer>
@@ -54,8 +54,8 @@ export default function Home(props) {
   function renderLander() {
     return (
       <div className="lander">
-        <h1>ITC6480</h1>
-        <p>$rm Servers</p>
+        <h1>ITC-6480 - We Hate Servers</h1>
+        <p>File Upload Front End</p>
       </div>
     );
   }

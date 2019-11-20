@@ -18,12 +18,14 @@ export default function NewNote(props) {
   }
 
   function handleFileChange(event) {
-    file.current = event.target.files[0];
+    console.log(event.target.files);
+
+    file.current = event.target.files;
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-  
+
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(
         `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
@@ -31,28 +33,41 @@ export default function NewNote(props) {
       );
       return;
     }
-  
+
     setIsLoading(true);
-  //upload file using s3Upload method
+
+    // upload file using s3Upload method
     try {
-      const attachment = file.current
-        ? await s3Upload(file.current)
-        : null;
-  
-      await createNote({ content, attachment });
+      const promiseList = [];
+      for (let i = 0; i < file.current.length; i++) {
+        promiseList.push(
+          uploadfilePromise(file.current[i])
+        );
+      }
+
+      const result = await Promise.all(promiseList);
+      console.log(result);
       props.history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
     }
   }
-  
+
   function createNote(note) {
     return API.post("notes", "/notes", {
       body: note
     });
   }
-//added multiple in FormControl
+
+  function uploadfilePromise(file) {
+    return s3Upload(file)
+      .then(attachment => {
+        return createNote({ content, attachment });
+      })
+  }
+
+  // added multiple in FormControl
   return (
     <div className="NewNote">
       <form onSubmit={handleSubmit}>

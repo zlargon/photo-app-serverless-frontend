@@ -6,7 +6,7 @@ import "./NewNote.css";
 //import AWS Amplify to connect our API
 import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
-
+import ImageInfo from '../libs/ImageInfo';
 
 export default function NewNote(props) {
   const file = useRef(null);
@@ -36,22 +36,37 @@ export default function NewNote(props) {
 
     setIsLoading(true);
 
-    // upload file using s3Upload method
     try {
-      const promiseList = [];
-      for (let i = 0; i < file.current.length; i++) {
-        promiseList.push(
-          uploadfilePromise(file.current[i])
-        );
-      }
+      // check image
+      const f = file.current[0];
+      await ImageInfo(f);
 
-      const result = await Promise.all(promiseList);
-      console.log(result);
+      const attachment = await s3Upload(f);
+      await createNote({ content, attachment });
+
       props.history.push("/");
+
     } catch (e) {
-      alert(e);
+      alert(e.message);
       setIsLoading(false);
     }
+
+    // upload file using s3Upload method
+    // try {
+    //   const promiseList = [];
+    //   for (let i = 0; i < file.current.length; i++) {
+    //     promiseList.push(
+    //       uploadfilePromise(file.current[i])
+    //     );
+    //   }
+    //
+    //   const result = await Promise.all(promiseList);
+    //   console.log(result);
+    //   props.history.push("/");
+    // } catch (e) {
+    //   alert(e);
+    //   setIsLoading(false);
+    // }
   }
 
   function createNote(note) {
@@ -61,6 +76,7 @@ export default function NewNote(props) {
   }
 
   function uploadfilePromise(file) {
+
     return s3Upload(file)
       .then(attachment => {
         return createNote({ content, attachment });
@@ -80,7 +96,7 @@ export default function NewNote(props) {
         </FormGroup>
         <FormGroup controlId="file">
           <ControlLabel>Attachment</ControlLabel>
-          <FormControl onChange={handleFileChange} type="file" multiple />
+          <FormControl onChange={handleFileChange} type="file" />
         </FormGroup>
         <LoaderButton
           block

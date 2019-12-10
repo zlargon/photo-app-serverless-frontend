@@ -23,6 +23,7 @@ export default function Home(props) {
         for (const i in photos) {
           photos[i].url = urls[i];
         }
+        photos.sort((a, b) => b.createAt - a.createAt);
 
         setPhotos(photos);
       } catch (e) {
@@ -60,7 +61,7 @@ export default function Home(props) {
         :
           // 2. photos
           <div>
-            <PageHeader>Photos</PageHeader>
+            <PageHeader>Photos ({photos.length})</PageHeader>
             <LinkContainer className="upload" to="/upload">
               <h4>{"\uFF0B"} Upload a new photo</h4>
             </LinkContainer>

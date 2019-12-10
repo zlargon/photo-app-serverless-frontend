@@ -62,7 +62,7 @@ export default function Photos(props) {
           // 2. photos
           <div>
             <PageHeader>Photos</PageHeader>
-            <LinkContainer className="upload" to="/notes/new">
+            <LinkContainer className="upload" to="/upload">
               <h4>{"\uFF0B"} Upload a new photo</h4>
             </LinkContainer>
             {!isLoading && render(photos)}

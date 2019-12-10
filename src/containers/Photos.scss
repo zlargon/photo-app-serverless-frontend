@@ -1,0 +1,53 @@
+.photos {
+  // lander
+  .lander {
+    padding: 80px 0;
+    text-align: center;
+
+    h1 {
+      font-family: "Open Sans", sans-serif;
+      font-weight: 600;
+    }
+
+    p {
+      color: #999;
+    }
+  }
+
+  // upload button
+  .upload {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    overflow: hidden;
+    line-height: 1.5;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+
+    &:hover {
+      color: steelblue;
+    }
+  }
+
+  // photo list
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+
+    .image {
+      height: 150px;
+      margin: 5px;
+      border: 3px solid white;
+      cursor: pointer;
+
+      img {
+        height: 100%;
+        width: auto;
+      }
+
+      &:hover {
+        border-color: lightgrey;
+      }
+    }
+  }
+}

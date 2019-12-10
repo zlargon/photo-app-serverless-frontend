@@ -9,8 +9,7 @@ export default function AuthenticatedRoute({ component: C, appProps, ...rest }) 
         appProps.isAuthenticated
           ? <C {...props} {...appProps} />
           : <Redirect
-              to={`/login?redirect=${props.location.pathname}${props.location
-                .search}`}
+              to={`/login?redirect=${props.location.pathname}${props.location.search}`}
             />}
     />
   );

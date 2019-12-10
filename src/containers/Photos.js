@@ -41,8 +41,8 @@ export default function Photos(props) {
       <div className="list">
         { photos.map(photo => {
           return (
-            <LinkContainer className="image" key={photo.noteID} to={`/notes/${photo.noteID}`}>
-              <img src={photo.url} />
+            <LinkContainer className="image" key={photo.noteID} to={`/photo/${photo.noteID}`}>
+              <img src={photo.url} alt=""/>
             </LinkContainer>
           )
         }) }

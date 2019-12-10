@@ -100,6 +100,14 @@ export default function UploadPhoto(props) {
       </PageHeader>
       <form onSubmit={handleSubmit}>
         <FormGroup>
+          <ul>
+            <li>Dimensions must be between 600 x 100 pixels and 4200 x 4200 pixels</li>
+            <li>Allow JPG format</li>
+            <li>Allow black and white photos</li>
+            <li>Allow File size less than 4MB</li>
+          </ul>
+        </FormGroup>
+        <FormGroup>
           <FormControl
             multiple
             type="file"
@@ -114,7 +122,7 @@ export default function UploadPhoto(props) {
             isLoading={isLoading}
             disabled={!isValid}
           >
-            {!isValid ? 'No Ready to Upload' : 'Upload Photos' }
+            {!isValid ? 'Not Ready to Upload' : 'Ready to Upload' }
           </LoaderButton>
           <br/>
           <ListGroup>

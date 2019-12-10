@@ -2,6 +2,7 @@ import { API, Storage } from "aws-amplify";
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import Spinning from "../components/Spinning";
 import "./Home.scss";
 
 export default function Home(props) {
@@ -55,13 +56,15 @@ export default function Home(props) {
       { !props.isAuthenticated ?
           // 1. welcome
           <div className="lander">
-            <h1>ITC-6480 - We Hate Servers</h1>
+            <h1>ITC 6480 - We Hate Servers</h1>
             <p>File Upload Front End</p>
           </div>
         :
           // 2. photos
           <div>
-            <PageHeader>Photos ({photos.length})</PageHeader>
+            <PageHeader>
+              Photos {isLoading ? <Spinning/> : ` (${photos.length})` }
+            </PageHeader>
             <LinkContainer className="upload" to="/upload">
               <h4>{"\uFF0B"} Upload a new photo</h4>
             </LinkContainer>

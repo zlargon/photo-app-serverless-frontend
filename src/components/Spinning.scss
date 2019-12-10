@@ -1,9 +1,7 @@
-.upload-photo {
-  .spinning {
-    margin-left: 7px;
-    top: 2px;
-    animation: spin 1s infinite linear;
-  }
+.spinning {
+  margin-left: 7px;
+  top: 2px;
+  animation: spin 1s infinite linear;
 }
 
 @keyframes spin {

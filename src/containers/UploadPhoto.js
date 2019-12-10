@@ -11,7 +11,7 @@ import {
   Glyphicon
 } from "react-bootstrap";
 import LoaderButton from '../components/LoaderButton';
-import './UploadPhoto.scss';
+import Spinning from "../components/Spinning";
 
 export default function UploadPhoto(props) {
   const [fileInfo, setFileInfo] = useState([]);
@@ -95,8 +95,7 @@ export default function UploadPhoto(props) {
   return (
     <div className="upload-photo">
       <PageHeader>
-        Upload Photo
-        {isChecking && <Glyphicon glyph="refresh" className="spinning" />}
+        Upload Photo {isChecking && <Spinning/>}
       </PageHeader>
       <form onSubmit={handleSubmit}>
         <FormGroup>

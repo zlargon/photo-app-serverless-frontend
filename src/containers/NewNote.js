@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import config from "../config";
 import "./NewNote.css";
 //import AWS Amplify to connect our API
 import { API } from "aws-amplify";
@@ -25,15 +24,6 @@ export default function NewNote(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-      alert(
-        `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-          1000000} MB.`
-      );
-      return;
-    }
-
     setIsLoading(true);
 
     try {

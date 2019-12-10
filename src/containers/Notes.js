@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { API, Storage } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import config from "../config";
 import "./Notes.css";
 import { s3Upload } from "../libs/awsLib";
 export default function Notes(props) {
@@ -60,15 +59,6 @@ async function handleSubmit(event) {
   let attachment;
 
   event.preventDefault();
-
-  if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-    alert(
-      `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-        1000000} MB.`
-    );
-    return;
-  }
-
   setIsLoading(true);
 
   try {

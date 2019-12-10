@@ -1,5 +1,4 @@
 export default {
-  MAX_ATTACHMENT_SIZE: 5000000,
   STRIPE_KEY: "",
   s3: {
     REGION: "us-east-1",

@@ -8,22 +8,26 @@ import {
 import LoaderButton from "../components/LoaderButton";
 import { useFormFields } from "../libs/hooksLib";
 import "./Signup.css";
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 
 export default function Signup(props) {
   const [fields, handleFieldChange] = useFormFields({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    confirmationCode: ""
+    name: '',
+    credit_card: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    confirmationCode: ''
   });
   const [newUser, setNewUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
     return (
-      fields.email.length > 0 &&
-      fields.password.length > 0 &&
+      fields.email.length       > 0 &&
+      fields.name.length        > 0 &&
+      fields.credit_card.length > 0 &&
+      fields.password.length    > 0 &&
       fields.password === fields.confirmPassword
     );
   }
@@ -34,13 +38,26 @@ export default function Signup(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-  
+
     setIsLoading(true);
-  
+
     try {
+      // verify the credit card
+      const result = await API.get('notes', `/validate_credit_card/${fields.credit_card}`);
+      if (result.isValid === false) {
+        alert(`The Credit Card ${fields.credit_card} is invalid.`);
+        setIsLoading(false);
+        return;
+      }
+
+      // sign up
       const newUser = await Auth.signUp({
         username: fields.email,
-        password: fields.password
+        password: fields.password,
+        attributes: {
+          'name': fields.name,
+          'custom:credit_card': fields.credit_card
+        }
       });
       setIsLoading(false);
       setNewUser(newUser);
@@ -49,16 +66,16 @@ export default function Signup(props) {
       setIsLoading(false);
     }
   }
-  
+
   async function handleConfirmationSubmit(event) {
     event.preventDefault();
-  
+
     setIsLoading(true);
-  
+
     try {
       await Auth.confirmSignUp(fields.email, fields.confirmationCode);
       await Auth.signIn(fields.email, fields.password);
-  
+
       props.userHasAuthenticated(true);
       props.history.push("/");
     } catch (e) {
@@ -121,6 +138,22 @@ export default function Signup(props) {
             value={fields.confirmPassword}
           />
         </FormGroup>
+        <FormGroup controlId="name" bsSize="large">
+          <ControlLabel>Name</ControlLabel>
+          <FormControl
+            type="text"
+            value={fields.name}
+            onChange={handleFieldChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="credit_card" bsSize="large">
+          <ControlLabel>Credit Card</ControlLabel>
+          <FormControl
+            type="number"
+            value={fields.credit_card}
+            onChange={handleFieldChange}
+          />
+        </FormGroup>
         <LoaderButton
           block
           type="submit"
@@ -130,6 +163,11 @@ export default function Signup(props) {
         >
           Signup
         </LoaderButton>
+        <br/>
+        <a href="https://saijogeorge.com/dummy-credit-card-generator/"
+          target="blank">
+          Dummy Credit Card Generator
+        </a>
       </form>
     );
   }

@@ -7,8 +7,7 @@ import {
   ListGroup,
   ListGroupItem,
   FormGroup,
-  FormControl,
-  Glyphicon
+  FormControl
 } from "react-bootstrap";
 import LoaderButton from '../components/LoaderButton';
 import Spinning from "../components/Spinning";

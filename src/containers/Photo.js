@@ -1,10 +1,10 @@
 import { API, Storage } from 'aws-amplify';
 import React, { useState, useEffect } from 'react';
-import { FormGroup, PageHeader } from 'react-bootstrap';
+import { FormGroup, ControlLabel, PageHeader } from 'react-bootstrap';
 import LoaderButton from '../components/LoaderButton';
 import './Photo.scss';
 
-export default function Notes(props) {
+export default function Photo(props) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [image, setImage] = useState({});
 
@@ -55,6 +55,7 @@ export default function Notes(props) {
     <div className="photo">
       <PageHeader>{image.content}</PageHeader>
       <form>
+        <ControlLabel>Uploaded At: {new Date(image.createdAt).toLocaleString()}</ControlLabel>
         <FormGroup className="image">
           <img src={image.url} alt=""/>
         </FormGroup>

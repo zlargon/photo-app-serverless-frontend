@@ -1,7 +1,7 @@
-import { API, Storage } from 'aws-amplify';
+import { Auth, API, Storage } from 'aws-amplify';
 import ImageInfo from '../libs/ImageInfo';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   PageHeader,
   ListGroup,
@@ -17,6 +17,20 @@ export default function UploadPhoto(props) {
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
+  const [email, setEmail] = useState(null);
+
+  useEffect(() => {
+    async function onLoad() {
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        setEmail(user.attributes.email);
+      } catch (e) {
+        alert(e);
+      }
+    }
+
+    onLoad();
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -93,6 +107,7 @@ export default function UploadPhoto(props) {
 
   return (
     <div className="upload-photo">
+      <div>{email}</div>
       <PageHeader>
         Upload Photo {isChecking && <Spinning/>}
       </PageHeader>

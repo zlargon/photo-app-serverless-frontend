@@ -1,4 +1,4 @@
-import { API, Storage } from 'aws-amplify';
+import { Auth, API, Storage } from 'aws-amplify';
 import React, { useState, useEffect } from 'react';
 import { FormGroup, ControlLabel, PageHeader } from 'react-bootstrap';
 import LoaderButton from '../components/LoaderButton';
@@ -7,10 +7,14 @@ import './Photo.scss';
 export default function Photo(props) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [image, setImage] = useState({});
+  const [email, setEmail] = useState(null);
 
   useEffect(() => {
     async function onLoad() {
       try {
+        const user = await Auth.currentAuthenticatedUser();
+        setEmail(user.attributes.email);
+
         const file = await API.get('notes', `/notes/${props.match.params.id}`);
         file.url = await Storage.vault.get(file.attachment);
         setImage(file);
@@ -53,6 +57,7 @@ export default function Photo(props) {
 
   return (
     <div className="photo">
+      <div>{email}</div>
       <PageHeader>{image.content}</PageHeader>
       <form>
         <ControlLabel>Uploaded At: {new Date(image.createdAt).toLocaleString()}</ControlLabel>

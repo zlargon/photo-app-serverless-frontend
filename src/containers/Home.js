@@ -1,4 +1,4 @@
-import { API, Storage } from "aws-amplify";
+import { Auth, API, Storage } from "aws-amplify";
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -8,6 +8,7 @@ import "./Home.scss";
 export default function Home(props) {
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [email, setEmail] = useState(null);
 
   // load photos
   useEffect(() => {
@@ -17,6 +18,9 @@ export default function Home(props) {
       }
 
       try {
+        const user = await Auth.currentAuthenticatedUser();
+        setEmail(user.attributes.email);
+
         const photos = await API.get('notes', '/notes');
         const urls = await Promise.all(
           photos.map(note => Storage.vault.get(note.attachment))
@@ -62,6 +66,7 @@ export default function Home(props) {
         :
           // 2. photos
           <div>
+            <div>{email}</div>
             <PageHeader>
               Photos {isLoading ? <Spinning/> : ` (${photos.length})` }
             </PageHeader>

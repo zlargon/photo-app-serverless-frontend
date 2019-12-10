@@ -1,79 +1,72 @@
+import { API, Storage } from "aws-amplify";
 import React, { useState, useEffect } from "react";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
-import "./Home.css";
-import { API } from "aws-amplify";
+import { PageHeader } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import "./Home.scss";
 
 export default function Home(props) {
-  const [notes, setNotes] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // load photos
   useEffect(() => {
-    async function onLoad() {
+    const onLoad = async () => {
       if (!props.isAuthenticated) {
         return;
       }
-  
+
       try {
-        const notes = await loadNotes();
-        setNotes(notes);
+        const photos = await API.get('notes', '/notes');
+        const urls = await Promise.all(
+          photos.map(note => Storage.vault.get(note.attachment))
+        );
+        for (const i in photos) {
+          photos[i].url = urls[i];
+        }
+
+        setPhotos(photos);
       } catch (e) {
         alert(e);
       }
-  
+
       setIsLoading(false);
-    }
-  
+    };
+
     onLoad();
   }, [props.isAuthenticated]);
-  
-  function loadNotes() {
-    return API.get("notes", "/notes");
-  }
 
-  function renderNotesList(notes) {
-    return [{}].concat(notes).map((note, i) =>
-      i !== 0 ? (
-        <LinkContainer key={note.noteID} to={`/notes/${note.noteID}`}>
-          <ListGroupItem header={note.content.trim().split("\n")[0]}>
-            {"Created: " + new Date(note.createdAt).toLocaleString()}
-          </ListGroupItem>
-        </LinkContainer>
-      ) : (
-        <LinkContainer key="new" to="/notes/new">
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> Create a new upload
-            </h4>
-          </ListGroupItem>
-        </LinkContainer>
-      )
-    );
-  }
-
-  function renderLander() {
+  const render = (photos) => {
     return (
-      <div className="lander">
-        <h1>ITC-6480 - We Hate Servers</h1>
-        <p>File Upload Front End</p>
+      <div className="list">
+        { photos.map(photo => {
+          return (
+            <LinkContainer className="image" key={photo.noteID} to={`/photo/${photo.noteID}`}>
+              <img src={photo.url} alt=""/>
+            </LinkContainer>
+          )
+        }) }
       </div>
-    );
-  }
-
-  function renderNotes() {
-    return (
-      <div className="notes">
-        <PageHeader>Your Uploads</PageHeader>
-        <ListGroup>
-          {!isLoading && renderNotesList(notes)}
-        </ListGroup>
-      </div>
-    );
+    )
   }
 
   return (
-    <div className="Home">
-      {props.isAuthenticated ? renderNotes() : renderLander()}
+    <div className="photos">
+      { !props.isAuthenticated ?
+          // 1. welcome
+          <div className="lander">
+            <h1>ITC-6480 - We Hate Servers</h1>
+            <p>File Upload Front End</p>
+          </div>
+        :
+          // 2. photos
+          <div>
+            <PageHeader>Photos</PageHeader>
+            <LinkContainer className="upload" to="/upload">
+              <h4>{"\uFF0B"} Upload a new photo</h4>
+            </LinkContainer>
+            {!isLoading && render(photos)}
+          </div>
+      }
     </div>
   );
 }

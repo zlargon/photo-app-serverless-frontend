@@ -7,56 +7,51 @@ import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 
+
+
+//our function
 function App(props) {
-  // state variable that makes login info persist, start app by checking current authentication state
+  //state variable that makes login info persist, start app by checking current authentication state
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-
-  // initializes the isAuthinticated state variable to false
-  // calling userHasAuthenticated updates the state
+  //initializes the isAuthinticated state variable to false
+  //calling userHasAuthenticated updates the state
   const [isAuthenticated, userHasAuthenticated] = useState(false);
-
-  const [email, setEmail] = useState(null);
-
-  // load user session
+  //load user session
   useEffect(() => {
-    async function onLoad() {
-      try {
-        await Auth.currentSession();
-        const user = await Auth.currentAuthenticatedUser();
-        setEmail(user.attributes.email);
-        userHasAuthenticated(true);
-      } catch(e) {
-        if (e !== 'No current user') {
-          alert(e);
-        }
-      }
-
-      setIsAuthenticating(false);
-    }
-
     onLoad();
   }, []);
-
-  // clears out login session from the browser
+  
+  async function onLoad() {
+    try {
+      await Auth.currentSession();
+      userHasAuthenticated(true);
+    }
+    catch(e) {
+      if (e !== 'No current user') {
+        alert(e);
+      }
+    }
+  
+    setIsAuthenticating(false);
+  }
+  
+  //clears out login session from the browser
   async function handleLogout() {
     await Auth.signOut();
-
+  
     userHasAuthenticated(false);
-    // redirect to login after logout
+    //redirect to login after logout
     props.history.push("/login");
-
+       
   }
-
+  
   return (
     !isAuthenticating && (
       <div className="App container">
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">
-                ITC 6480 - We Hate Servers
-                {isAuthenticated ? ` (${email})`: '' }
-              </Link>
+              <Link to="/">ITC-6480 - We Hate Servers</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-cd ${0%/*}
+cd ${0%/*}/..
 function echo_y() { echo -e "\033[1;33m$@\033[0m" ; } # yellow echo
 
 # The S3 bucket for static website

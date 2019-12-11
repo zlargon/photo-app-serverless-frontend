@@ -7,20 +7,18 @@ import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 
-
-
-//our function
+// our function
 function App(props) {
-  //state variable that makes login info persist, start app by checking current authentication state
+  // state variable that makes login info persist, start app by checking current authentication state
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  //initializes the isAuthinticated state variable to false
-  //calling userHasAuthenticated updates the state
+  // initializes the isAuthinticated state variable to false
+  // calling userHasAuthenticated updates the state
   const [isAuthenticated, userHasAuthenticated] = useState(false);
-  //load user session
+  // load user session
   useEffect(() => {
     onLoad();
   }, []);
-  
+
   async function onLoad() {
     try {
       await Auth.currentSession();
@@ -31,40 +29,33 @@ function App(props) {
         alert(e);
       }
     }
-  
+
     setIsAuthenticating(false);
   }
-  
-  //clears out login session from the browser
+
+  // clears out login session from the browser
   async function handleLogout() {
     await Auth.signOut();
-  
+
     userHasAuthenticated(false);
-    //redirect to login after logout
+    // redirect to login after logout
     props.history.push("/login");
-       
+
   }
-  
+
   return (
     !isAuthenticating && (
       <div className="App container">
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">ITC-6480 - We Hate Servers</Link>
+              <Link to="/">ITC 6480 - We Hate Servers</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {isAuthenticated ? (
-                <>
-                  <LinkContainer to="/settings">
-                    <NavItem>Settings</NavItem>
-                  </LinkContainer>
-                  <NavItem onClick={handleLogout}>Logout</NavItem>
-                </>
-              ) : (
+              {isAuthenticated ? <NavItem onClick={handleLogout}>Logout</NavItem> : (
                 <>
                   <LinkContainer to="/signup">
                     <NavItem>Signup</NavItem>
@@ -83,6 +74,5 @@ function App(props) {
   );
 }
 
-//export default App;
 //redirect to login after logout
 export default withRouter(App);

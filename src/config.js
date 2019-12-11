@@ -1,5 +1,4 @@
 export default {
-  STRIPE_KEY: "",
   s3: {
     REGION: "us-east-1",
     BUCKET: ""

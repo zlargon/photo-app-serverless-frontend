@@ -1,6 +1,4 @@
 {
-  "name": "lambda-app-client",
-  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "aws-amplify": "^1.2.4",

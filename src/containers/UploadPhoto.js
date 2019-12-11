@@ -17,13 +17,13 @@ export default function UploadPhoto(props) {
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
-  const [email, setEmail] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function onLoad() {
       try {
         const user = await Auth.currentAuthenticatedUser();
-        setEmail(user.attributes.email);
+        setUser(user.attributes);
       } catch (e) {
         alert(e);
       }
@@ -107,7 +107,7 @@ export default function UploadPhoto(props) {
 
   return (
     <div className="upload-photo">
-      <div>{email}</div>
+      <div>{user && user.name}</div>
       <PageHeader>
         Upload Photo {isChecking && <Spinning/>}
       </PageHeader>

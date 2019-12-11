@@ -7,13 +7,13 @@ import './Photo.scss';
 export default function Photo(props) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [image, setImage] = useState({});
-  const [email, setEmail] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function onLoad() {
       try {
         const user = await Auth.currentAuthenticatedUser();
-        setEmail(user.attributes.email);
+        setUser(user.attributes);
 
         const file = await API.get('notes', `/notes/${props.match.params.id}`);
         file.url = await Storage.vault.get(file.attachment);
@@ -57,7 +57,7 @@ export default function Photo(props) {
 
   return (
     <div className="photo">
-      <div>{email}</div>
+      <div>{user && user.name}</div>
       <PageHeader>{image.content}</PageHeader>
       <form>
         <ControlLabel>Uploaded At: {new Date(image.createdAt).toLocaleString()}</ControlLabel>

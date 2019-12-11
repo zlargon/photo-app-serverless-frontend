@@ -8,7 +8,7 @@ import "./Home.scss";
 export default function Home(props) {
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [email, setEmail] = useState(null);
+  const [user, setUser] = useState(null);
 
   // load photos
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Home(props) {
 
       try {
         const user = await Auth.currentAuthenticatedUser();
-        setEmail(user.attributes.email);
+        setUser(user.attributes);
 
         const photos = await API.get('notes', '/notes');
         const urls = await Promise.all(
@@ -66,7 +66,7 @@ export default function Home(props) {
         :
           // 2. photos
           <div>
-            <div>{email}</div>
+            <div>{user && user.name}</div>
             <PageHeader>
               Photos {isLoading ? <Spinning/> : ` (${photos.length})` }
             </PageHeader>

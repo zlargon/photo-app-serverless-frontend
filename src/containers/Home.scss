@@ -1,7 +1,7 @@
 .photos {
   // lander
   .lander {
-    padding: 80px 0;
+    margin-top: 30px;
     text-align: center;
 
     h1 {
@@ -11,6 +11,14 @@
 
     p {
       color: #999;
+    }
+
+    .screenshot {
+      margin-top: 30px;
+      max-width: 800px;
+      height: auto;
+      border: 1px solid gray;
+      border-radius: 8px;
     }
   }
 

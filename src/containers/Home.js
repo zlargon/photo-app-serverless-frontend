@@ -61,7 +61,10 @@ export default function Home(props) {
           // 1. welcome
           <div className="lander">
             <h1>Black & White Photos</h1>
-            <p>File Upload Front End</p>
+            <p>Upload your Black & White Photos</p>
+            <div>
+              <img alt="" className="screenshot" src={process.env.PUBLIC_URL + '/screenshot.png'} />
+            </div>
           </div>
         :
           // 2. photos

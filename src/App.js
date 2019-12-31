@@ -49,7 +49,7 @@ function App(props) {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">ITC 6480 - We Hate Servers</Link>
+              <Link to="/">Black & White Photos</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

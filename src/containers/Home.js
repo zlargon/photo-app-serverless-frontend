@@ -60,7 +60,7 @@ export default function Home(props) {
       { !props.isAuthenticated ?
           // 1. welcome
           <div className="lander">
-            <h1>ITC 6480 - We Hate Servers</h1>
+            <h1>Black & White Photos</h1>
             <p>File Upload Front End</p>
           </div>
         :

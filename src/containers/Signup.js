@@ -43,7 +43,7 @@ export default function Signup(props) {
 
     try {
       // verify the credit card
-      const result = await API.get('notes', `/validate_credit_card/${fields.credit_card}`);
+      const result = await API.get('photos', `/validate_credit_card/${fields.credit_card}`);
       if (result.isValid === false) {
         alert(`The Credit Card ${fields.credit_card} is invalid.`);
         setIsLoading(false);

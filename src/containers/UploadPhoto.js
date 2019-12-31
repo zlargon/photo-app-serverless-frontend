@@ -56,7 +56,7 @@ export default function UploadPhoto(props) {
     );
 
     // 2. update dynamodb
-    return await API.post("notes", "/notes", {
+    return await API.post("photos", "/photos", {
       body: {
         content: file.name,
         attachment: stored.key

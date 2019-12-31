@@ -21,9 +21,9 @@ export default function Home(props) {
         const user = await Auth.currentAuthenticatedUser();
         setUser(user.attributes);
 
-        const photos = await API.get('notes', '/notes');
+        const photos = await API.get('photos', '/photos');
         const urls = await Promise.all(
-          photos.map(note => Storage.vault.get(note.attachment))
+          photos.map(photo => Storage.vault.get(photo.attachment))
         );
         for (const i in photos) {
           photos[i].url = urls[i];
@@ -46,7 +46,7 @@ export default function Home(props) {
       <div className="list">
         { photos.map(photo => {
           return (
-            <LinkContainer className="image" key={photo.noteID} to={`/photo/${photo.noteID}`}>
+            <LinkContainer className="image" key={photo.photoID} to={`/photo/${photo.photoID}`}>
               <img src={photo.url} alt=""/>
             </LinkContainer>
           )

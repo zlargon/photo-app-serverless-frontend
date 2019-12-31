@@ -15,7 +15,7 @@ export default function Photo(props) {
         const user = await Auth.currentAuthenticatedUser();
         setUser(user.attributes);
 
-        const file = await API.get('notes', `/notes/${props.match.params.id}`);
+        const file = await API.get('photos', `/photos/${props.match.params.id}`);
         file.url = await Storage.vault.get(file.attachment);
         setImage(file);
       } catch (e) {
@@ -27,10 +27,9 @@ export default function Photo(props) {
   }, [props.match.params.id]);
 
   // HANDLE DELETE FUNCTION
-  // NOTE NOT DELETING FILE JUST ATTACHED NOTED
   // https://aws.github.io/aws-amplify/api/classes/storageclass.html#remove to remove file
-  function deleteNote() {
-    return API.del('notes', `/notes/${props.match.params.id}`);
+  function deletePhoto() {
+    return API.del('photos', `/photos/${props.match.params.id}`);
   }
 
   const handleDelete = async (event) => {
@@ -47,7 +46,7 @@ export default function Photo(props) {
     setIsDeleting(true);
 
     try {
-      await deleteNote();
+      await deletePhoto();
       props.history.push('/');
     } catch (e) {
       alert(e);
